@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>storm</groupId>
+    <artifactId>storm-kafka</artifactId>
+    <packaging>jar</packaging>
+    <version>0.8.0-wip4</version>
+    <name>storm-kafka</name>
+    <description>Kafka support for Storm</description>
+    <url>https://github.com/nathanmarz/storm-contrib/tree/master/storm-kafka</url>
+    <properties>
+        <!-- github server corresponds to entry in ~/.m2/settings.xml -->
+        <github.global.server>github</github.global.server>
+    </properties>
+    <licenses>
+        <license>
+            <url>Eclipse Public License - Version 1.0</url>
+        </license>
+    </licenses>
+    <build>
+        <sourceDirectory>src/jvm</sourceDirectory>
+        <resources>
+            <resource>
+                <directory>resources</directory>
+            </resource>
+        </resources>
+        <testResources>
+            <testResource>
+                <directory>dev-resources</directory>
+            </testResource>
+            <testResource>
+                <directory>resources</directory>
+            </testResource>
+        </testResources>
+        <directory>target</directory>
+        <outputDirectory>target/classes</outputDirectory>
+        <plugins>
+            <plugin>
+                <artifactId>maven-deploy-plugin</artifactId>
+                <configuration>
+                    <altDeploymentRepository>internal.repo::default::file://${project.build.directory}/mvn-repo</altDeploymentRepository>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>com.github.github</groupId>
+                <artifactId>site-maven-plugin</artifactId>
+                <version>0.8</version>
+                <configuration>
+                    <message>Maven artifacts for ${project.version}</message>  <!-- git commit message -->
+                    <noJekyll>true</noJekyll>                                  <!-- disable webpage processing -->
+                    <outputDirectory>${project.build.directory}/mvn-repo</outputDirectory> <!-- matches distribution management repository url above -->
+                    <branch>refs/heads/mvn-repo</branch>                       <!-- remote branch name -->
+                    <includes><include>**/*</include></includes>
+                    <repositoryName>storm-contrib</repositoryName>      <!-- github repo name -->
+                    <repositoryOwner>suyograo</repositoryOwner>    <!-- github username  -->
+                </configuration>
+                <executions>
+                    <!-- run site-maven-plugin's 'site' target as part of the build's normal 'deploy' phase -->
+                    <execution>
+                        <goals>
+                            <goal>site</goal>
+                        </goals>
+                        <phase>deploy</phase>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>http://repo1.maven.org/maven2</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+        <repository>
+            <id>clojars</id>
+            <url>https://clojars.org/repo/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+        </repository>
+    </repositories>
+    <dependencies>
+        <dependency>
+            <groupId>org.clojars.jasonjckn</groupId>
+            <artifactId>kafka_2.9.1</artifactId>
+            <version>0.7.0</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.apache.zookeeper</groupId>
+                    <artifactId>zookeeper</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>log4j</groupId>
+                    <artifactId>log4j</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>storm</groupId>
+            <artifactId>storm</artifactId>
+            <version>0.8.2</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.clojure</groupId>
+            <artifactId>clojure</artifactId>
+            <version>1.4.0</version>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>GitHub ${project.artifactId} Repository</name>
+            <url>https://raw.github.com//suyograo/mvn-repo</url>
+        </repository>
+    </distributionManagement>
+</project>
+
+        <!-- This file was autogenerated by Leiningen.
+          Please do not edit it directly; instead edit project.clj and regenerate it.
+          It should not be considered canonical data. For more information see
+          https://github.com/technomancy/leiningen -->
